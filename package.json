@@ -1,0 +1,27 @@
+{
+  "name": "pokegacha",
+  "version": "0.1.0",
+  "description": "A Discord bot where members collect, trade and battle Pokemon.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MagmaJed/PokeGacha.git"
+  },
+  "author": "Jed Hazaymeh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MagmaJed/PokeGacha/issues"
+  },
+  "homepage": "https://github.com/MagmaJed/PokeGacha#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "canvas": "^2.8.0",
+    "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0",
+    "mongoose": "^5.12.13",
+    "request": "^2.88.2"
+  }
+}
