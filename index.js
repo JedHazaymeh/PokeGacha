@@ -2,41 +2,40 @@ require('dotenv').config();
 
 const mongoose = require('mongoose'),
     config = require('./config'),
-    fs = require('fs');
+    fs = require('fs'),
+    { Client, Collection } = require('discord.js');
+const client = new Client(config.clientOptions);
 
-const { Client, Collection } = require('discord.js'),
-    client = new Client(config.clientOptions);
-
-mongoose.connect(process.env.MONGODB, config.dbOptions).then(() => {
-    console.log("Database connected");
-}).catch(err => console.log("Error connecting to database: " + err));
+// new tools collection
+client.tools = new Collection();
+// load commands
+const tools = require('./tools');
+for (const key of Object.keys(tools)) client.tools.set(key, tools[key]);
 
 // new command collection
 client.commands = new Collection();
 // load commands
-for (const file of fs.readdirSync('./commands/').filter(file => file.endsWith('.js'))) {
-    const command = require(`./commands/${file}`);
-    client.commands.set(command.name, command);
+const commandFolders = fs.readdirSync('./commands');
+for (const folder of commandFolders) {
+    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
+    for (const file of commandFiles) {
+        const command = require(`./commands/${folder}/${file}`);
+        client.commands.set(command.name, command);
+    }
 }
 
-client.once('ready', () => {
-    console.log('PokeGacha ready');
-    console.log('Available commands: ' + Array.from(client.commands.keys()));
-})
+// register event listeners
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+for (const file of eventFiles) {
+    const event = require(`./events/${file}`);
+    if (event.once) client.once(event.name, (...args) => event.execute(...args, client));
+    else client.on(event.name, (...args) => event.execute(...args, client));
+}
 
-client.on('error', err => { console.log(err) });
+// connect to MongoDB
+mongoose.connect(process.env.MONGODB, config.dbOptions)
+    .then(() => console.log("Database connected"))
+    .catch(err => console.log("Error connecting to database: " + err.message));
 
-client.on('message', message => {
-    if (!message.content.startsWith(process.env.PREFIX) || message.author.bot) return;
-
-    const args = message.content.slice(process.env.PREFIX.length).split(/ +/);
-    const command = args.shift().toLowerCase();
-
-    if (!client.commands.has(command)) return message.channel.send(`'${command}' is not a valid command. Use ${process.env.PREFIX}help for available commands.`);
-
-    console.log(`${message.author.username} issued command: ${command} ${args}`);
-    client.commands.get(command).execute(message, args, client);
-
-})
-
+// start bot
 client.login(process.env.TOKEN);

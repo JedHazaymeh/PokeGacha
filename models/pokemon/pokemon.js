@@ -4,33 +4,38 @@ const pokemonSchema = mongoose.Schema({
     id: { type: Number, required: true },
     name: { type: String, required: true },
     types: {
-        type: [{ type: String }],
+        type: [{ type: String, _id: false }],
         validate: [(val) => { return val.length < 3; }, 'Exceeded 2 type limit']
     },
     passives: {
         type: [{
             name: { type: String },
-            hidden: { type: Boolean }
+            hidden: { type: Boolean },
+            _id: false
         }],
         required: true
     },
-    base: {
-        type: {
-            hp: { type: Number },
-            atk: { type: Number },
-            def: { type: Number },
-            sp_atk: { type: Number },
-            sp_def: { type: Number },
-            speed: { type: Number }
-        },
+    base_stats: {
+        type: [{
+            name: String,
+            value: Number,
+            _id: false
+        }],
         required: true
+    },
+    moves: {
+        type: [{ type: String, _id: false }]
+    },
+    tutor_moves: {
+        type: [{ type: String, _id: false }]
     },
     evo: {
         type: {
             prev: { type: String },
             next: [{
                 name: { type: String },
-                method: { type: String }
+                method: { type: String },
+                _id: false
             }]
         },
         required: true
@@ -38,13 +43,14 @@ const pokemonSchema = mongoose.Schema({
     drops: {
         type: [{
             item: String,
-            rarity: Number
+            rarity: Number,
+            _id: false
         }]
     },
     pokedex: {
         type: {
             genus: String,
-            entry: String,
+            entries: [{ type: String, _id: false }],
             habitat: String
         }
     },
@@ -53,7 +59,8 @@ const pokemonSchema = mongoose.Schema({
     egg_groups: {
         type: [{
             type: String,
-            validate: [(val) => { return val.length < 3; }, 'Exceeded 2 egg group limit']
+            validate: [(val) => { return val.length < 3; }, 'Exceeded 2 egg group limit'],
+            _id: false
         }]
     }
 })

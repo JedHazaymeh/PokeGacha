@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 
 const typeSchema = mongoose.Schema({
     name: { type: String, required: true },
-    immunes: { type: [String], required: true },
-    resists: { type: [String], required: true },
-    strengths: { type: [String], required: true }
+    color: { type: String, required: true },
+    immunes: { type: [{ type: String, _id: false }], required: true },
+    resists: { type: [{ type: String, _id: false }], required: true },
+    strengths: { type: [{ type: String, _id: false }], required: true }
 })
 
 // typeSchema.methods.versus = function(target) { // returns damage multiplier

@@ -12,5 +12,9 @@ module.exports = {
     clientOptions: {
         partials: ["MESSAGE", "CHANNEL", "REACTION", "GUILD_MEMBER", "USER"],
         ws: { intents: intents }
-    }
+    },
+    admins: [
+        '418378647229956096'
+    ],
+    invite: 'https://discord.com/oauth2/authorize?client_id=767407824963108925&permissions=2147871808&scope=bot'
 }
