@@ -1,11 +1,10 @@
 const Discord = require('discord.js');
 const User = require('../../models/general/user');
 const Capsule = require('../../models/general/capsule');
-const Tools = require('../../tools');
 
 module.exports = {
     name: 'capsules',
-    aliases: ['c', 'caps'],
+    aliases: ['caps'],
     admin: false,
     description: 'View your unopened capsules',
     async execute(message, args) {

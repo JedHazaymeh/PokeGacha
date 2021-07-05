@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const User = require('../../models/general/user');
 const Battler = require('../../models/pokemon/battler');
 const Pokemon = require('../../models/pokemon/pokemon');
-const Tools = require('../../tools');
 
 module.exports = {
     name: 'pokemon',
@@ -11,7 +10,7 @@ module.exports = {
     description: 'View your collected Pokémon',
     async execute(message, args) {
         // set target to specified user, else to self
-        const target = (args[0] || message.author.username).replace('-', ' ');
+        const target = (args[0] || message.author.username).split('-').join(' ');
         // find target document
         let user = await User.findOne({ name: target }).exec();
         // if no document found
@@ -61,8 +60,9 @@ module.exports = {
                         const battler = await Battler.findById(...poke).exec();
                         const species = await Pokemon.findOne({ name: battler.species }).exec();
                         const lvl_icon = message.client.emojis.cache.find(e => e.name == 'Level');
+                        const pos = i * 15 + j + 1;
                         var pkmn = { inline: true };
-                        pkmn['name'] = `${battler.nickname || battler.species} ${lvl_icon}${battler.level} \u200B \u200B`;
+                        pkmn['name'] = `\`${pos}\` ${battler.nickname || battler.species} ${lvl_icon}${battler.level} \u200B \u200B`;
                         pkmn['value'] = `${message.client.emojis.cache.find(e => e.name === species.types[0])} ${battler.species} \u200B`;
                         pages[i].fields.push(pkmn);
                     } else {

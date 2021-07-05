@@ -9,6 +9,12 @@ const itemSchema = mongoose.Schema({
         type: String,
         enum: ['Poké Balls', 'Medicine', 'Berries', 'Battle', 'Machines', 'Utility', 'General', 'Special'],
         required: true
+    },
+    use: {
+        type: {
+            effect: { type: String, enum: ['XP', 'Evolve', 'Enhance', 'Special'] },
+            value: { type: Number }
+        }
     }
 })
 

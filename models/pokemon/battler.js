@@ -11,7 +11,8 @@ const battlerSchema = mongoose.Schema({
         default: ''
     },
     level: { type: Number, max: 100, required: true},
-    xp: { type: Number },
+    xp: { type: Number, min: 0, default: 0 },
+    xp_from_last: { type: Number, min: 0, default: 0 },
     passive: { type: Number, max: 2 },
     talent: {
         type: [{

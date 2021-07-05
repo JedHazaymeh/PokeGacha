@@ -42,7 +42,7 @@ const pokemonSchema = mongoose.Schema({
     },
     drops: {
         type: [{
-            item: String,
+            item: { type: String, alias: 'name' },
             rarity: Number,
             _id: false
         }]

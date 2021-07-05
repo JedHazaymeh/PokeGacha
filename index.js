@@ -8,10 +8,12 @@ const client = new Client(config.clientOptions);
 
 // new tools collection
 client.tools = new Collection();
-// load commands
+// load tools
 const tools = require('./tools');
 for (const key of Object.keys(tools)) client.tools.set(key, tools[key]);
 
+// new cooldowns collection
+client.cooldowns = new Collection();
 // new command collection
 client.commands = new Collection();
 // load commands
@@ -23,6 +25,7 @@ for (const folder of commandFolders) {
         client.commands.set(command.name, command);
     }
 }
+
 
 // register event listeners
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));

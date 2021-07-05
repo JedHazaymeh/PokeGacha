@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const User = require('../../models/general/user');
-const Tools = require('../../tools');
 
 module.exports = {
     name: 'inventory',
@@ -9,7 +8,7 @@ module.exports = {
     description: 'View your obtained items',
     async execute(message, args) {
         // set target to specified user, else to self
-        const target = args[0] || message.author.username;
+        const target = (args[0] || message.author.username).split('-').join(' ');
         // find target document
         let user = await User.findOne({ name: target }).exec();
         // if no document found

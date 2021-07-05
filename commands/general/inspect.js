@@ -1,5 +1,4 @@
 const Discord = require('discord.js'),
-    Tools = require('../../tools'),
     User = require('../../models/general/user'),
     Battler = require('../../models/pokemon/battler'),
     Item = require('../../models/general/item'),
@@ -53,7 +52,7 @@ module.exports = {
 
             const pages = [
                 {
-                    description: `\`#${String(species.id).padStart(3, '0')} ${pokemon.species}\``,
+                    description: `#${String(species.id).padStart(3, '0')} ${pokemon.species}`,
                     fields: [
                         { name: `${species.pokedex.genus}`, value: species.pokedex.entries.pop()},
                         { name: `\`Type\``, value: typeList, inline: true},
@@ -83,7 +82,7 @@ module.exports = {
             for (const key of Object.keys(pages[0])) pkmnEmbed[key] = pages[0][key];
             // send embed message
             const sentEmbed = await message.channel.send(pkmnEmbed);
-            message.client.tools.get('insertPages')(sentEmbed, pkmnEmbed, pages, message.author.id);
+            message.client.tools.get('insertPages')(sentEmbed, pkmnEmbed, pages, message.author.id, Number(value), message);
         }
         // else if inspecting item
         else if (['item', 'i'].includes(type)) {
@@ -95,19 +94,19 @@ module.exports = {
             const icon = new Discord.MessageAttachment(await message.client.tools.get('getItemGraphic')(item.name.english), 'icon.png'); 
             // create embed displaying inventory
             const itemEmbed = new Discord.MessageEmbed()
-            .setColor('#e8eeff')
-            .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
-            .setTitle(item.name.english)
-            .attachFiles(icon)
-            .setImage('attachment://icon.png')
-            .addFields(
-                { name: '`Description`', value: item.description, inline: true },
-                { name: '`Item Type`', value: item.type, inline: true },
-                { name: '\u200B', value: '\u200B', inline: true},
-                { name: `ˣ ${user.inventory[value - 1].amount}  available`, value: '\u200B'}
-            )
-            .setFooter('Page 1 / 1')
-            .setTimestamp();
+                .setColor('#e8eeff')
+                .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
+                .setTitle(item.name.english)
+                .attachFiles(icon)
+                .setImage('attachment://icon.png')
+                .addFields(
+                    { name: '`Description`', value: item.description, inline: true },
+                    { name: '`Item Type`', value: item.type, inline: true },
+                    { name: '\u200B', value: '\u200B', inline: true},
+                    { name: `ˣ ${user.inventory[value - 1].amount}  available`, value: '\u200B'}
+                )
+                .setFooter('Page 1 / 1')
+                .setTimestamp();
             // send embed message
             message.channel.send(itemEmbed);
         }
